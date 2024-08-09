@@ -5,3 +5,5 @@
 /bin/Debug-x64
 /bin-int/Debug-x64
 /.vs/Hazel
+/bin/Debug-windows-x86_64
+/bin-int/Debug-windows-x86_64

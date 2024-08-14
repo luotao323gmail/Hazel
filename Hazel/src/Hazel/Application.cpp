@@ -6,14 +6,30 @@
 #include <GLFW/glfw3.h>
 
 namespace Hazel {
+
+#define BIND_EVNET_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+
 	Application::Application()
 	{
 		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window->SetEventCallback(BIND_EVNET_FN(OnEvent));
 	}
 
 	Application::~Application()
 	{
 
+	}
+
+	void Application::OnEvent(Event& e)
+	{
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVNET_FN(OnWindowClose));
+		HZ_CORE_TRACE("{0}", e.ToString());
+	}
+
+	bool Application::OnWindowClose(WindowCloseEvent& e) {
+		m_Running = false;
+		return true;
 	}
 
 	void Application::Run()
@@ -27,4 +43,6 @@ namespace Hazel {
 			m_Window->OnUpdate();
 		}
 	}
+
+	
 }

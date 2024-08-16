@@ -1,0 +1,5 @@
+﻿  The vcpkg manifest was disabled, but we found a manifest file in D:\project\game\local\Hazel\Hazel\. You may want to enable vcpkg manifests in your properties page or pass /p:VcpkgEnableManifest=true to the msbuild invocation.
+cl : command line  warning D9002: ignoring unknown option '-std=c11'
+cl : command line  warning D9002: ignoring unknown option '-lgdi32'
+  glad.c
+  GLAD.vcxproj -> D:\project\game\local\Hazel\Hazel\vendor\Glad\bin\Debug-windows-x86_64\GLAD\GLAD.lib

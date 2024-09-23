@@ -9,7 +9,7 @@ namespace Hazel {
 	class HAZEL_API Layer
 	{
 	public:
-		Layer(const std::string& name = "Layuer");
+		Layer(const std::string& name = "Layer");
 		virtual ~Layer();
 
 		virtual void OnAttach() {}
@@ -17,6 +17,8 @@ namespace Hazel {
 		virtual void OnDetach() {}
 
 		virtual void OnUpdate() {}
+
+		virtual void OnImGuiRender() {}
 
 		virtual void OnEvent(Event& event) {}
 

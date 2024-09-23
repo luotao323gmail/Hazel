@@ -7,7 +7,7 @@
 /.vs/Hazel
 /bin/Debug-windows-x86_64
 /bin-int/Debug-windows-x86_64
-/Hazel/vendor/imgui/bin
-/Hazel/vendor/imgui/bin-int
-/Hazel/vendor/GLAD/bin
-/Hazel/vendor/GLAD/bin-int
+/Hazel/vendor/imgui/bin/
+/Hazel/vendor/imgui/bin-int/
+/Hazel/vendor/Glad/bin/
+/Hazel/vendor/Glad/bin-int/

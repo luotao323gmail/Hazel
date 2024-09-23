@@ -13,3 +13,5 @@
 #include "Hazel/ImGui/ImGuiLayer.h"
 
 #include "Hazel/EntryPoint.h"
+
+#include "Hazel/Vector2D.h"

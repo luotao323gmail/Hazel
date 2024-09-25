@@ -9,6 +9,8 @@
 #include <glm/ext/matrix_clip_space.hpp> // glm::perspective
 #include <glm/ext/scalar_constants.hpp> // glm::pi
 
+#include "imgui/imgui.h"
+
 //glm::mat4 camera(float Translate, glm::vec2 const& Rotate)
 //{
 //	glm::mat4 Projection = glm::perspective(glm::pi<float>() * 0.25f, 4.0f / 3.0f, 0.1f, 100.f);
@@ -27,6 +29,13 @@ public:
 		:Layer("Example")
 	{
 		//auto cam = camera(5.0f, { 0.5f,0.5f });
+	}
+
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("Test");
+		ImGui::Text("Hello world!");
+		ImGui::End();
 	}
 
 	void OnUpdate() override
@@ -95,7 +104,7 @@ public:
 
 	~Sandbox()
 	{
-
+		
 	}
 };
 

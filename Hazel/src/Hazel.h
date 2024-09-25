@@ -14,7 +14,7 @@
 
 #include "Hazel/EntryPoint.h"
 
-#include "Hazel/Vector2D.h"
+//#include "Hazel/Vector2D.h"
 
 
 //ID	Author	Date	Message

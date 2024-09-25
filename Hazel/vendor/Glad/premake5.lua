@@ -1,7 +1,8 @@
 project "GLAD"
 	kind "StaticLib"
 	language "C"
-	staticruntime "off"
+    cppdialect "C++17"
+	staticruntime "on"
 	warnings "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
@@ -20,15 +21,15 @@ project "GLAD"
 	}
 
 	filter "system:windows"
-		buildoptions { "-std=c11", "-lgdi32" }
 		systemversion "10.0.22621.0"
-		staticruntime "On"
 
-		
-	
+	filter "configurations:Debug"
+		runtime "Debug"
+		symbols "on"
 
-	filter { "system:windows", "configurations:Release" }	
-		buildoptions "/MT"
+	filter "configurations:Release"
+		runtime "Release"
+		optimize "on"
 
 
 	

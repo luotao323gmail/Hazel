@@ -58,7 +58,7 @@ public:
 			}
 			HZ_CLIENT_TRACE("{0}", (char)e.GetKeyCode());
 
-			Hazel::Vector2D vec1(1.0, 2.0);
+		/*	Hazel::Vector2D vec1(1.0, 2.0);
 			Hazel::Vector2D vec2(4.0, 6.0);
 
 			Hazel::Vector2D vecSum = vec1 + vec2;
@@ -67,7 +67,7 @@ public:
 			HZ_CLIENT_TRACE("y={0}", vecSum.getY());
 			double dotProduct = vec1 * vec2;
 			double angle = vec1.angleBetween(vec2);
-			HZ_CLIENT_TRACE("angle={0}", angle);
+			HZ_CLIENT_TRACE("angle={0}", angle);*/
 
 			//std::cout << "ÏòÁ¿ 1: " << vec1 << std::endl;
 

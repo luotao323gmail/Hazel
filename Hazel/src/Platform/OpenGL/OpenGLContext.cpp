@@ -22,7 +22,12 @@ namespace Hazel {
 		HZ_CORE_INFO("  Vendor: {0}", glGetString(GL_VENDOR));
 		HZ_CORE_INFO("  Renderer: {0}", glGetString(GL_RENDERER));
 		HZ_CORE_INFO("  Version: {0}", glGetString(GL_VERSION));*/
-
+		const GLubyte* vendor = glad_glGetString(GL_VENDOR);
+		std::cout << "OpenGL Vendor: " << vendor << std::endl;
+		const GLubyte* Renderer = glad_glGetString(GL_RENDERER);
+		std::cout << "OpenGL Renderer: " << Renderer << std::endl;
+		const GLubyte* Version = glad_glGetString(GL_VERSION);
+		std::cout << "OpenGL Version: " << Version << std::endl;
 	}
 
 	void OpenGLContext::SwapBuffers()

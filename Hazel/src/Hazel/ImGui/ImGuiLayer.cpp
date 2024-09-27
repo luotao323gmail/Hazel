@@ -8,11 +8,19 @@
 //#include "Platform/OpenGL/ImGuiOpenGLRenderer.h"
 
 #include "Hazel/Application.h"
-
+#include <windows.h>   
 #include <GLFW/glfw3.h>
+#include <GLFW/glfw3native.h> 
 #include <glad/glad.h>
 
+
+
+
 namespace Hazel {
+
+	// 获取窗口的 DPI 缩放因子（Windows 上）
+	
+
 	ImGuiLayer::ImGuiLayer() 
 		: Layer("ImGuiLayer")
 	{
@@ -22,11 +30,17 @@ namespace Hazel {
 	{
 	}
 
+	
+	
 	void ImGuiLayer::OnAttach()
 	{
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+
+		
+
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -43,6 +57,21 @@ namespace Hazel {
 
 		Application& app = Application::Get();
 		GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
+
+		
+		// 获取窗口的 DPI 缩放系数
+		float dpiScale, yscale;
+		glfwGetWindowContentScale(window, &dpiScale, &yscale);
+
+		// 设置全局字体缩放比例
+		io.FontGlobalScale = dpiScale;
+
+		// 根据 DPI 缩放加载字体
+		io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\consola.ttf", 6.0f * dpiScale);
+
+		// 调整 UI 元素的尺寸
+		style.ScaleAllSizes(dpiScale);
+
 
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 410");

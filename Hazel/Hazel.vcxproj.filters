@@ -1389,4 +1389,7 @@
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\shader\ShaderEg.txt" />
+  </ItemGroup>
 </Project>

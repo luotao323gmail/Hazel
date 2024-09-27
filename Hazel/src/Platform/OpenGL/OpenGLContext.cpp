@@ -28,6 +28,9 @@ namespace Hazel {
 		std::cout << "OpenGL Renderer: " << Renderer << std::endl;
 		const GLubyte* Version = glad_glGetString(GL_VERSION);
 		std::cout << "OpenGL Version: " << Version << std::endl;
+
+		const char* version = glfwGetVersionString();
+		printf("GLFW version: %s\n", version);
 	}
 
 	void OpenGLContext::SwapBuffers()

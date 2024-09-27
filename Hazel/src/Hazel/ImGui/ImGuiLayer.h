@@ -6,6 +6,7 @@
 #include "Hazel/Events/MouseEvent.h"
 #include "Hazel/Events/ApplicationEvent.h"
 
+
 namespace Hazel {
 	class HAZEL_API ImGuiLayer : public Layer
 	{
@@ -40,5 +41,7 @@ namespace Hazel {
 		bool OnWindowResizedEvent(WindowResizeEvent& e);*/
 	private:
 		float m_Time = 0.0f;
+
+		/*float GetDPIScaleForWindow(GLFWwindow* window);*/
 	};
 }

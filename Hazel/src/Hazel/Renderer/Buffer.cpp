@@ -12,7 +12,7 @@ namespace Hazel {
 	
 	VertexBuffer* VertexBuffer::Create(float* vertices, uint32_t size)
 	{
-		switch (Renderer::GetAPI()) 
+		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::None:
 				HZ_CORE_ASSERT(false, "unknown RendererAPI!");return nullptr;

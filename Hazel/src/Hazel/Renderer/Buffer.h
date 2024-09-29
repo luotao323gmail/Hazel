@@ -98,8 +98,6 @@ namespace Hazel {
 				element.Offset = offset;
 				offset += element.Size;
 				m_Stride += element.Size;
-				HZ_CORE_INFO("element.Size={0} ", element.Size);
-				HZ_CLIENT_INFO("m_Stride={0}", m_Stride);
 			}
 			
 		}

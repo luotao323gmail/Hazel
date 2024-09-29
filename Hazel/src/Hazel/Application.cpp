@@ -18,30 +18,19 @@ namespace Hazel {
 	{
 		switch (type)
 		{
-		case Hazel::ShaderDataType::Float: return GL_FLOAT;
-
-		case Hazel::ShaderDataType::Float2:  return GL_FLOAT;
-
-		case Hazel::ShaderDataType::Float3:  return GL_FLOAT;
-
-		case Hazel::ShaderDataType::Float4: return GL_FLOAT;
-
-		case Hazel::ShaderDataType::Mat3:  return GL_FLOAT;
-
-		case Hazel::ShaderDataType::Mat4:  return GL_FLOAT;
-
-		case Hazel::ShaderDataType::Int:  return GL_INT;
-
-		case Hazel::ShaderDataType::Int2:  return GL_INT;
-
-		case Hazel::ShaderDataType::Int3:  return GL_INT;
-
-		case Hazel::ShaderDataType::Int4:  return GL_INT;
-
-		case Hazel::ShaderDataType::Bool:  return GL_BOOL;
-
-
+			case Hazel::ShaderDataType::Float:    return GL_FLOAT;
+			case Hazel::ShaderDataType::Float2:   return GL_FLOAT;
+			case Hazel::ShaderDataType::Float3:   return GL_FLOAT;
+			case Hazel::ShaderDataType::Float4:   return GL_FLOAT;
+			case Hazel::ShaderDataType::Mat3:     return GL_FLOAT;
+			case Hazel::ShaderDataType::Mat4:     return GL_FLOAT;
+			case Hazel::ShaderDataType::Int:      return GL_INT;
+			case Hazel::ShaderDataType::Int2:     return GL_INT;
+			case Hazel::ShaderDataType::Int3:     return GL_INT;
+			case Hazel::ShaderDataType::Int4:     return GL_INT;
+			case Hazel::ShaderDataType::Bool:     return GL_BOOL;
 		}
+
 		HZ_CORE_ASSERT(false, "Unknown ShaderDataType!");
 		return 0;
 	}
@@ -70,21 +59,26 @@ namespace Hazel {
 
 		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
-		BufferLayout layout = {
-			 {ShaderDataType::Float3,"a_Position"},
-			 {ShaderDataType::Float4,"a_Color"}
-			 /*,{ShaderDataType::Float3,"a_Normal"}*/
-		};
+		{
+			BufferLayout layout = {
+				{ ShaderDataType::Float3, "a_Position" },
+				{ ShaderDataType::Float4, "a_Color" }
+			};
+
+			m_VertexBuffer->SetLayout(layout);
+		}
 
 		uint32_t index = 0;
-		for (const auto& elemeent : layout) {
+		const auto& layout = m_VertexBuffer->GetLayout();
+		for (const auto& element : layout)
+		{
 			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index
-				, elemeent.GetComponentCount()
-				, ShaderDataTypeToOpenGLBaseType(elemeent.Type)
-				, elemeent.Normalized ? GL_TRUE : GL_FALSE
-				, layout.GetStride()
-				, (const void*)elemeent.Offset);
+			glVertexAttribPointer(index,
+				element.GetComponentCount(),
+				ShaderDataTypeToOpenGLBaseType(element.Type),
+				element.Normalized ? GL_TRUE : GL_FALSE,
+				layout.GetStride(),
+				(const void*)element.Offset);
 			index++;
 		}
 

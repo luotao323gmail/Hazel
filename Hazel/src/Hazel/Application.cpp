@@ -4,9 +4,11 @@
 #include "Hazel/Events/ApplicationEvent.h"
 #include "Hazel/Log.h"
 
-#include <glad/glad.h>
 
 #include "Input.h"
+
+#include "Hazel/Renderer/RenderCommand.h"
+#include "Hazel/Renderer/Renderer.h"
 
 namespace Hazel {
 
@@ -88,17 +90,17 @@ namespace Hazel {
 		// DRAW SQUARE-------------------------------------
 		m_VertexArraySQ.reset(VertexArray::Create());
 		float verticesSQ[3 * 4] = {
-			-0.35f, -0.35f, 0.0f,
-			 0.35f, -0.35f, 0.0f,
-			 0.35f,  0.35f, 0.0f,
-			-0.35f,  0.35f, 0.0f
+			-0.75f, -0.75f, 0.0f,
+			 0.75f, -0.75f, 0.0f,
+			 0.75f,  0.75f, 0.0f,
+			-0.75f,  0.75f, 0.0f
 		};
 
 		std::shared_ptr<VertexBuffer> vertexBufferSQ;
 		vertexBufferSQ.reset(VertexBuffer::Create(verticesSQ, sizeof(verticesSQ)));
 		vertexBufferSQ->SetLayout({
 			{ ShaderDataType::Float3, "a_Position" }
-		});
+			});
 		m_VertexArraySQ->AddVertexBuffer(vertexBufferSQ);
 
 
@@ -182,23 +184,26 @@ namespace Hazel {
 	{
 		while (m_Running)
 		{
-			glClearColor(0.1f, 0.1f, 0.1f, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+
+
+			RenderCommand::SetClearColor({ 0.1f,0.1f,0.1f,1 });
+			RenderCommand::Clear();
+
+			Renderer::BeginScene();
 
 			m_ShaderSQ->Bind();
-			m_VertexArraySQ->Bind();
-			glDrawElements(GL_TRIANGLES, m_VertexArraySQ->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_VertexArraySQ);
 
 			m_Shader->Bind();
-			m_VertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_VertexArray);
 
-			
+			Renderer::EndScene();
+
+
 
 			for (Layer* layer : m_layerStack)
 				layer->OnUpdate();
-			//auto [x, y] = Input::GetMousePosition();
-			//HZ_CORE_TRACE("{0},{1}", x, y);
+			
 
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_layerStack)

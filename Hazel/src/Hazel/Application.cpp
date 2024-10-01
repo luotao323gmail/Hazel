@@ -199,15 +199,16 @@ namespace Hazel {
 
 			Renderer::EndScene();
 
-
-
 			for (Layer* layer : m_layerStack)
+			{
 				layer->OnUpdate();
-			
+			}
 
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_layerStack)
+			{
 				layer->OnImGuiRender();
+			}	
 			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();

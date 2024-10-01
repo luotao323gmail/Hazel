@@ -9,6 +9,8 @@
 
 #include "Hazel/Renderer/RenderCommand.h"
 #include "Hazel/Renderer/Renderer.h"
+#include "Hazel/Renderer/OrthographicCamera.h"
+
 
 namespace Hazel {
 
@@ -19,6 +21,8 @@ namespace Hazel {
 
 
 	Application::Application()
+		:m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
+		//: m_Camera(-2.0f, 2.0f, -2.0f, 2.0f)
 	{
 		HZ_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
@@ -60,6 +64,8 @@ namespace Hazel {
             layout(location = 1) in vec4 a_Color;
 
 
+            uniform mat4 u_ViewProjection;
+
 			out vec3 v_Position;
 			out vec4 v_Color;
 
@@ -67,7 +73,7 @@ namespace Hazel {
 			{
                 v_Position = a_Position;
                 v_Color = a_Color;
-				gl_Position = vec4(a_Position,1.0);
+				gl_Position = u_ViewProjection * vec4(a_Position,1.0);
 			}
 		)";
 
@@ -114,16 +120,15 @@ namespace Hazel {
 			
 			layout(location = 0) in vec3 a_Position;
            
-
+			uniform mat4 u_ViewProjection;
 
 			out vec3 v_Position;
-			out vec4 v_Color;
 
 			void main()
 			{
                 v_Position = a_Position;
              
-				gl_Position = vec4(a_Position,1.0);
+				gl_Position = u_ViewProjection * vec4(a_Position,1.0);
 			}
 		)";
 
@@ -133,7 +138,7 @@ namespace Hazel {
 			layout(location = 0) out vec4 color;
 
 			in vec3 v_Position;
-            in vec4 v_Color;
+           
 
 			void main()
 			{
@@ -173,6 +178,19 @@ namespace Hazel {
 				break;
 			}
 		}
+
+		/*if (e.GetEventType() == Hazel::EventType::KeyPressed) {
+			Hazel::KeyPressedEvent& e2 = (Hazel::KeyPressedEvent&)e;
+			if (e2.GetKeyCode() == 65) {
+				HZ_CLIENT_TRACE("Tab key is pressed(event)!");
+				m_Camera.SetPosition({ 0.4f,0.4f,0.0f });
+				Renderer::Submit(m_VertexArraySQ, m_ShaderSQ);
+				Renderer::Submit(m_VertexArray, m_Shader);
+				HZ_CLIENT_TRACE("Tab key is pressed end(event)!");
+			}
+			
+			HZ_CLIENT_TRACE("{0}", (char)e2.GetKeyCode());
+		}*/
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e) {
@@ -189,13 +207,13 @@ namespace Hazel {
 			RenderCommand::SetClearColor({ 0.1f,0.1f,0.1f,1 });
 			RenderCommand::Clear();
 
-			Renderer::BeginScene();
+			m_Camera.SetPosition({0.5f,0.5f,0.0f});
+			m_Camera.SetRotation(45.0f);
 
-			m_ShaderSQ->Bind();
-			Renderer::Submit(m_VertexArraySQ);
+			Renderer::BeginScene(m_Camera);
 
-			m_Shader->Bind();
-			Renderer::Submit(m_VertexArray);
+			Renderer::Submit(m_VertexArraySQ, m_ShaderSQ);
+			Renderer::Submit(m_VertexArray, m_Shader);
 
 			Renderer::EndScene();
 
@@ -208,7 +226,7 @@ namespace Hazel {
 			for (Layer* layer : m_layerStack)
 			{
 				layer->OnImGuiRender();
-			}	
+			}
 			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();

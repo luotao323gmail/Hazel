@@ -131,22 +131,23 @@ public:
 			}
 		)";
 
-		const std::string src22 = R"(
+		const std::string flatColorShaderFragmentSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) out vec4 color;
 
 			in vec3 v_Position;
            
+            uniform vec4 u_Color;
 
 			void main()
 			{
-				color = vec4(0.2,0.3,0.8, 1.0);
+				color = u_Color;
 				
 			}
 		)";
 
-		m_ShaderSQ.reset(new Hazel::Shader(src12, src22));
+		m_ShaderSQ.reset(new Hazel::Shader(src12, flatColorShaderFragmentSrc));
 	}
 
 	void OnImGuiRender() override
@@ -158,7 +159,7 @@ public:
 	{
 
 		HZ_CLIENT_TRACE("Delta time:{0}s,{1}ms", ts.GetSeconds(), ts.GetMillseconds());
-		
+
 		if (Hazel::Input::IsKeyPressed(HZ_KEY_LEFT))
 		{
 			m_CameraPosition.x -= m_CameraMoveSpeed * ts;
@@ -214,19 +215,26 @@ public:
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
+		glm::vec4 redColor(0.8f, 0.2f, 0.3f, 1.0f);
+		glm::vec4 blueColor(0.2f, 0.3f, 0.8f, 1.0f);
 
 		for (int y = -5; y < 5; y++) {
 			for (int x = -5; x < 5; x++) {
 
-				glm::vec3 pos(x * 0.11f, y*0.11f, 0.0f);
-
+				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+				if (x % 2 == 0) {
+					m_ShaderSQ->UploadUniformFloat4("u_Color", redColor);
+				}
+				else {
+					m_ShaderSQ->UploadUniformFloat4("u_Color", blueColor);
+				}
 				Hazel::Renderer::Submit(m_VertexArraySQ, m_ShaderSQ, transform);
 			}
 		}
-	
 
-		//Hazel::Renderer::Submit(m_VertexArray, m_Shader);
+
+		Hazel::Renderer::Submit(m_VertexArray, m_Shader);
 
 		Hazel::Renderer::EndScene();
 

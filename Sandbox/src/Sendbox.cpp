@@ -158,7 +158,7 @@ public:
 	void OnUpdate(Hazel::Timestep ts) override
 	{
 
-		HZ_CLIENT_TRACE("Delta time:{0}s,{1}ms", ts.GetSeconds(), ts.GetMillseconds());
+		//HZ_CLIENT_TRACE("Delta time:{0}s,{1}ms", ts.GetSeconds(), ts.GetMillseconds());
 
 		if (Hazel::Input::IsKeyPressed(HZ_KEY_LEFT))
 		{

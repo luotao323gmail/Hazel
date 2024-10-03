@@ -16,10 +16,15 @@ namespace Hazel {
 	{
 	}
 
-	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader)
+	void Renderer::Submit(
+		const std::shared_ptr<VertexArray>& vertexArray
+		, const std::shared_ptr<Shader>& shader
+		, const glm::mat4& transfomr
+	)
 	{
 		shader->Bind();
 		shader->UploadUniformMat4("u_ViewProjection", m_SceneData->ViewProejcrtMatrix);
+		shader->UploadUniformMat4("u_Transform", transfomr);
 
 		vertexArray->Bind();
 		RenderCommand::DrawIndex(vertexArray);

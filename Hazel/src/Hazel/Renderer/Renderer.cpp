@@ -18,8 +18,8 @@ namespace Hazel {
 	}
 
 	void Renderer::Submit(
-		const std::shared_ptr<VertexArray>& vertexArray
-		, const std::shared_ptr<Shader>& shader
+		const Ref<VertexArray>& vertexArray
+		, const Ref<Shader>& shader
 		, const glm::mat4& transfomr
 	)
 	{

@@ -16,8 +16,8 @@ namespace Hazel {
 		static void EndScene();
 
 		static void Submit(
-			const std::shared_ptr<VertexArray>& vertexArray
-			,const std::shared_ptr<Shader>& shader
+			const Ref<VertexArray>& vertexArray
+			,const Ref<Shader>& shader
 			,const glm::mat4& transfomr = glm::mat4(1.0f)
 		);
 

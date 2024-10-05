@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "OrthographicCamera.h"
 #include "Shader.h"
+#include <Platform/OpenGL/OpenGLShader.h>
 
 namespace Hazel {
 
@@ -23,8 +24,8 @@ namespace Hazel {
 	)
 	{
 		shader->Bind();
-		shader->UploadUniformMat4("u_ViewProjection", m_SceneData->ViewProejcrtMatrix);
-		shader->UploadUniformMat4("u_Transform", transfomr);
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_ViewProjection", m_SceneData->ViewProejcrtMatrix);
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_Transform", transfomr);
 
 		vertexArray->Bind();
 		RenderCommand::DrawIndex(vertexArray);

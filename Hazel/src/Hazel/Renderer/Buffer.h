@@ -109,7 +109,7 @@ namespace Hazel {
 	class VertexBuffer
 	{
 	public:
-		virtual ~VertexBuffer() {};
+		virtual ~VertexBuffer() = default;
 
 
 
@@ -126,7 +126,7 @@ namespace Hazel {
 	class IndexBuffer
 	{
 	public:
-		virtual ~IndexBuffer() {};
+		virtual ~IndexBuffer() = default;
 
 		virtual void Bind() const = 0;
 

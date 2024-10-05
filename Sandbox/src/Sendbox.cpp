@@ -11,6 +11,8 @@
 
 #include "imgui/imgui.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <Platform/OpenGL/OpenGLShader.h>
+#include <glm/gtc/type_ptr.hpp>
 //glm::mat4 camera(float Translate, glm::vec2 const& Rotate)
 //{
 //	glm::mat4 Projection = glm::perspective(glm::pi<float>() * 0.25f, 4.0f / 3.0f, 0.1f, 100.f);
@@ -88,7 +90,7 @@ public:
 				color = v_Color;
 			}
 		)";
-		m_Shader.reset(new Hazel::Shader(src1, src2));
+		m_Shader.reset(Hazel::Shader::Create(src1, src2));
 
 		// DRAW SQUARE-------------------------------------
 		m_VertexArraySQ.reset(Hazel::VertexArray::Create());
@@ -138,22 +140,19 @@ public:
 
 			in vec3 v_Position;
            
-            uniform vec4 u_Color;
+            uniform vec3 u_Color;
 
 			void main()
 			{
-				color = u_Color;
+				color = vec4(u_Color,1.0);
 				
 			}
 		)";
 
-		m_ShaderSQ.reset(new Hazel::Shader(src12, flatColorShaderFragmentSrc));
+		m_ShaderSQ.reset(Hazel::Shader::Create(src12, flatColorShaderFragmentSrc));
 	}
 
-	void OnImGuiRender() override
-	{
-
-	}
+	
 
 	void OnUpdate(Hazel::Timestep ts) override
 	{
@@ -215,20 +214,16 @@ public:
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-		glm::vec4 redColor(0.8f, 0.2f, 0.3f, 1.0f);
-		glm::vec4 blueColor(0.2f, 0.3f, 0.8f, 1.0f);
+	
+
+		std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_ShaderSQ)->Bind();
+		std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_ShaderSQ)->UploadUniformFloat3("u_Color",m_SquareColor);
 
 		for (int y = -5; y < 5; y++) {
 			for (int x = -5; x < 5; x++) {
 
 				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-				if (x % 2 == 0) {
-					m_ShaderSQ->UploadUniformFloat4("u_Color", redColor);
-				}
-				else {
-					m_ShaderSQ->UploadUniformFloat4("u_Color", blueColor);
-				}
 				Hazel::Renderer::Submit(m_VertexArraySQ, m_ShaderSQ, transform);
 			}
 		}
@@ -238,6 +233,14 @@ public:
 
 		Hazel::Renderer::EndScene();
 
+	}
+	
+
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("Settings");
+		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+		ImGui::End();
 	}
 
 	void OnEvent(Hazel::Event& event) override
@@ -266,6 +269,7 @@ private:
 
 	glm::vec3 m_SquarePosition;
 
+	glm::vec3 m_SquareColor = {0.2f,0.3f,0.8f};
 };
 
 

@@ -1,11 +1,13 @@
 #include "hzpch.h"
-#include "VertexArray.h"
+
+#include "Texture.h"
+
 #include "Renderer.h"
-#include "Platform/OpenGL/OpenGLVertexArray.h"
+#include "Platform/OpenGL/OpenGLTexture.h"
 
 namespace Hazel {
 
-	VertexArray* VertexArray::Create()
+	Ref<Texture2D> Texture2D::Create(const std::string& path)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -13,11 +15,10 @@ namespace Hazel {
 			HZ_CORE_ASSERT(false, "unknown RendererAPI!"); return nullptr;
 
 		case RendererAPI::API::OpenGL:
-			return new OpenGLVertexArray();
+			return std::make_shared<OpenGLTexture2D>(path);
 		}
 		HZ_CORE_ASSERT(false, "unknown RendererAPI!");
 
-			return nullptr;
+		return nullptr;
 	}
 }
-

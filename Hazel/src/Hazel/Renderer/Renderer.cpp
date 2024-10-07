@@ -18,8 +18,9 @@ namespace Hazel {
 	}
 
 	void Renderer::Submit(
-		const Ref<VertexArray>& vertexArray
-		, const Ref<Shader>& shader
+		
+		 const Ref<Shader>& shader
+		, const Ref<VertexArray>& vertexArray
 		, const glm::mat4& transfomr
 	)
 	{

@@ -6,4 +6,7 @@
   <ItemGroup>
     <Image Include="assets\textures\ChernoLogo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\Texture.glsl" />
+  </ItemGroup>
 </Project>

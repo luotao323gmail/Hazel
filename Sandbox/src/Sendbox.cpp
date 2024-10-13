@@ -13,6 +13,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <Platform/OpenGL/OpenGLShader.h>
 #include <glm/gtc/type_ptr.hpp>
+
+#include "Hazel/Renderer/Shader.h"
 //glm::mat4 camera(float Translate, glm::vec2 const& Rotate)
 //{
 //	glm::mat4 Projection = glm::perspective(glm::pi<float>() * 0.25f, 4.0f / 3.0f, 0.1f, 100.f);
@@ -90,7 +92,7 @@ public:
 				color = v_Color;
 			}
 		)";
-		m_Shader.reset(Hazel::Shader::Create(src1, src2));
+		m_Shader = Hazel::Shader::Create("VertexColorTriangle",src1, src2);
 
 		// DRAW SQUARE-------------------------------------
 		m_VertexArraySQ.reset(Hazel::VertexArray::Create());
@@ -152,17 +154,17 @@ public:
 			}
 		)";
 
-		m_ShaderSQ.reset(Hazel::Shader::Create(src12, flatColorShaderFragmentSrc));
+		m_ShaderSQ= Hazel::Shader::Create("SQ",src12, flatColorShaderFragmentSrc);
 
 
-		m_TextureShader.reset(Hazel::Shader::Create("assets/shaders/Texture.glsl"));
+		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
 
 		m_Texture = Hazel::Texture2D::Create("assets/textures/Checkerboard.png");
 		m_ChernoLogoTexture = Hazel::Texture2D::Create("assets/textures/ChernoLogo.png");
 
-		std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_TextureShader)->Bind();
-		std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+		std::dynamic_pointer_cast<Hazel::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<Hazel::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
 		
 		
 
@@ -248,12 +250,12 @@ public:
 			}
 		}
 
-		m_Texture->Bind();
-		Hazel::Renderer::Submit(m_TextureShader, m_VertexArraySQ,  glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
-		//Hazel::Renderer::Submit(m_VertexArray, m_Shader);
+		auto textureShader = m_ShaderLibrary.Get("Texture");
 
+		m_Texture->Bind();
+		Hazel::Renderer::Submit(textureShader, m_VertexArraySQ,  glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		m_ChernoLogoTexture->Bind();
-		Hazel::Renderer::Submit(m_TextureShader, m_VertexArraySQ, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Hazel::Renderer::Submit(textureShader, m_VertexArraySQ, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 
 		Hazel::Renderer::EndScene();
@@ -276,11 +278,11 @@ public:
 
 private:
 
-
+	Hazel::ShaderLibrary m_ShaderLibrary;
 	Hazel::Ref<Hazel::Shader> m_Shader;
 	Hazel::Ref<Hazel::VertexArray> m_VertexArray;
 
-	Hazel::Ref<Hazel::Shader> m_ShaderSQ, m_TextureShader;
+	Hazel::Ref<Hazel::Shader> m_ShaderSQ;
 	Hazel::Ref<Hazel::VertexArray> m_VertexArraySQ;
 
 	Hazel::Ref<Hazel::Texture2D> m_Texture,m_ChernoLogoTexture;
